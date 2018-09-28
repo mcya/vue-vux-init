@@ -1,6 +1,5 @@
-# yym
 
-> A Vue.js project
+## A Vue.js project
 
 ## Build Setup
 
@@ -8,23 +7,10 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# 已经配置自动打开默认浏览器
 npm run dev
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 关于vue项目的搭建可以直接访问下面地址，其中不仅是vux部分，还包含Vue的其他UI框架搭建以及配置。
+[点击这里进行访问](https://github.com/mcya/JavaScriptExperience/issues/38)
