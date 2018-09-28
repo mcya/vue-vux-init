@@ -35,6 +35,66 @@ Vue.prototype.HOST = '/httpUrl'; //添加 HOST 指向
 
 Vue.config.productionTip = false
 
+/**
+// 拦截器设置请参考这部分(开始)
+
+Vue.http.interceptors.push(function(request, next) {
+
+  let url=request.url;
+
+
+  //登录成功后将后台返回的sessionId在本地存下来,每次请求从sessionStorage中拿到存储的sessionId值
+  let loginInfo=this.$store.state.core.loginInfo;
+
+  //请求时,加上token
+  let isLoginSuccess=this.$store.state.core.isLogin;
+
+// let $this=this.$http;
+this.$vux.loading.show({text: '数据加载中', width: "200px"});// 显示Loading
+//	next((response)=>{
+//		this.$vux.loading.hide();
+//	})
+
+  if(isLoginSuccess==true||isLoginSuccess=='true'){
+  	  if(loginInfo!=null){
+        request.body.token=loginInfo.token;
+  	  	// request.url=addUrlPara(url,"token",loginInfo.token);
+  	  }
+   }
+   	// console.log(request.url);
+	  next((response) => {
+	  	this.$vux.loading.hide();
+	  	  return response;
+	  });
+
+});
+
+
+// 拦截器设置请参考这部分(结束)
+router.beforeEach(function (to,from,next) {
+	Vue.prototype.path = to.path
+   // let sessionId="7bb87074df1c4e84b5cbcdbe3b2303c8";
+	//不需要授权的页面,放行
+	if(to.meta.isIgnoreAuth==true){
+		next();
+    	return;
+	}
+  let isLoginSuccess=store.state.core.isLogin;
+
+  //没有登录,需要跳到登录页面
+  if(isLoginSuccess==true||isLoginSuccess=='true'){
+     //已经登录,往下走
+    next();
+  }else{
+    next('/login')
+  }
+
+})
+router.afterEach((to, from, next) => {
+
+})
+
+//*/
 
 
 /* eslint-disable no-new */

@@ -1,5 +1,6 @@
 
 ## A Vue.js project
+一个初始化的Vue+vux项目，其中包含UI框架的配置和后台连接配置
 
 ## Build Setup
 
