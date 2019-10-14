@@ -35,6 +35,48 @@ Vue.prototype.HOST = '/httpUrl'; //添加 HOST 指向
 
 Vue.config.productionTip = false
 
+
+
+// 发送请求的时候 触发loading 一般在移动端用到； PC端只需要对加载的内容做loading即可，loading值普遍加载标签上
+Vue.http.interceptors.push(function(request, next) {
+  //登录成功后将后台返回的sessionId在本地存下来,每次请求从sessionStorage中拿到存储的sessionId值
+  let loginInfo = this.$store.state.core.loginInfo;
+  //请求时,加上token
+  // let isLoginSuccess = this.$store.state.core.isLogin;
+  this.$vux.loading.show({text: '数据加载中', width: '200px'}); // 显示Loading
+  // if (isLoginSuccess == true || isLoginSuccess == 'true') {
+  //   if (loginInfo != null) {
+  //     request.body.token = loginInfo.token;
+  //   }
+  // }
+  next((response) => {
+    this.$vux.loading.hide();
+    return response;
+  });
+
+});
+
+// 路由拦截 start
+router.beforeEach(function(to, from, next) {
+  //不需要授权的页面,放行
+  if (to.meta.isIgnoreAuth == true) { //路由配置
+    next();
+    return;
+  }
+
+  if (to.path == '/login') {
+    sessionStorage.removeItem('user');
+  }
+  let user = JSON.parse(sessionStorage.getItem('user')); //或者通过 store.state 来控制
+  if (!user && to.path != '/login') {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
+
+})
+router.afterEach((to, from, next) => {})
+
 /**
 // 拦截器设置请参考这部分(开始)
 
@@ -104,3 +146,16 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+/*
+
+new Vue({
+  //el: '#app',
+  //template: '<App/>',
+  router,
+  store,
+  //components: { App }
+  render: h => h(App)
+}).$mount('#app')
+
+*/
